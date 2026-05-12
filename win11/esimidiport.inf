@@ -1,0 +1,159 @@
+;
+; ESIMidiport.inf - CME UF Keyboard MIDI Driver for Windows 11
+; Based on ESI Midiport driver with VID/PID patched for CME UF series
+; Supports: CME UF5, UF6, UF7, UF8, UF50, UF60, UF70
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=MEDIA
+ClassGUID={4d36e96c-e325-11ce-bfc1-08002be10318}
+Provider=%Provider%
+CatalogFile.NTAMD64 = cme_midi.cat
+DriverVer=05/09/2026,1.5.0.0
+PnpLockdown=1
+
+;==============================================================
+[SourceDisksNames]
+222 = %DiskDescription%,,,
+
+[SourceDisksFiles.amd64]
+ESIMidiport.sys = 222
+
+;==============================================================
+[WDM.CopyList]
+ESIMidiport.sys
+
+[DestinationDirs]
+WDM.CopyList=13
+
+;==============================================================
+[Manufacturer]
+"ESI"=DEVICES,NTamd64.10.0...22000
+
+[DEVICES.NTamd64.10.0...22000]
+%DESC_DEVICE_CME_UF%=DEVICE_CME, USB\VID_7104&PID_2202
+
+;==============================================================
+; DEVICE_CME - CME UF Keyboard
+;==============================================================
+[DEVICE_CME]
+Include=ks.inf,wdmaudio.inf
+Needs=KS.Registration,WDMAUDIO.Registration
+CopyFiles=WDM.CopyList
+AddReg=WDM.AddReg
+
+[DEVICE_CME.HW]
+AddReg=DEVICE_CME.HW.AddReg
+
+[DEVICE_CME.HW.AddReg]
+; No special HW settings needed
+
+[WDM.AddReg]
+HKR,,AssociatedFilters,,"wdmaud,swmidi"
+HKR,,Driver,,%FILE.WDM%
+HKR,,NTMPDriver,,%FILE.WDM%
+HKR,Drivers,SubClasses,,"midi"
+HKR,Drivers\midi\wdmaud.drv,Driver,,wdmaud.drv
+HKR,Drivers\midi\wdmaud.drv,Description,,%MME.DriverDesc%
+
+[DEVICE_CME.Interfaces]
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Topo_MIDI1%,WDM.Interface.Topo_MIDI1
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Topo_MIDI2%,WDM.Interface.Topo_MIDI2
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Topo_MIDI3%,WDM.Interface.Topo_MIDI3
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Topo_MIDI4%,WDM.Interface.Topo_MIDI4
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Topo_MIDI5%,WDM.Interface.Topo_MIDI5
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Topo_MIDI6%,WDM.Interface.Topo_MIDI6
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Topo_MIDI7%,WDM.Interface.Topo_MIDI7
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Topo_MIDI8%,WDM.Interface.Topo_MIDI8
+
+[WDM.Interface.Topo_MIDI1]
+AddReg=WDM.Interface.Topo_MIDI1.AddReg
+[WDM.Interface.Topo_MIDI1.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%WDM.Topo_MIDI1.szPname%
+
+[WDM.Interface.Topo_MIDI2]
+AddReg=WDM.Interface.Topo_MIDI2.AddReg
+[WDM.Interface.Topo_MIDI2.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%WDM.Topo_MIDI2.szPname%
+
+[WDM.Interface.Topo_MIDI3]
+AddReg=WDM.Interface.Topo_MIDI3.AddReg
+[WDM.Interface.Topo_MIDI3.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%WDM.Topo_MIDI3.szPname%
+
+[WDM.Interface.Topo_MIDI4]
+AddReg=WDM.Interface.Topo_MIDI4.AddReg
+[WDM.Interface.Topo_MIDI4.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%WDM.Topo_MIDI4.szPname%
+
+[WDM.Interface.Topo_MIDI5]
+AddReg=WDM.Interface.Topo_MIDI5.AddReg
+[WDM.Interface.Topo_MIDI5.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%WDM.Topo_MIDI5.szPname%
+
+[WDM.Interface.Topo_MIDI6]
+AddReg=WDM.Interface.Topo_MIDI6.AddReg
+[WDM.Interface.Topo_MIDI6.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%WDM.Topo_MIDI6.szPname%
+
+[WDM.Interface.Topo_MIDI7]
+AddReg=WDM.Interface.Topo_MIDI7.AddReg
+[WDM.Interface.Topo_MIDI7.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%WDM.Topo_MIDI7.szPname%
+
+[WDM.Interface.Topo_MIDI8]
+AddReg=WDM.Interface.Topo_MIDI8.AddReg
+[WDM.Interface.Topo_MIDI8.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%WDM.Topo_MIDI8.szPname%
+
+[DEVICE_CME.Services]
+AddService = %SERVICENAMES%, 0x00000002, DEVICE_CME_Service_Inst
+
+[DEVICE_CME_Service_Inst]
+DisplayName   = %DEVICE_CME.SvcDesc%
+ServiceType   = 1                  ; SERVICE_KERNEL_DRIVER
+StartType     = 3                  ; SERVICE_DEMAND_START
+ErrorControl  = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary = %13%\%FILE.WDM%
+
+;====================== Strings ===============================
+[Strings]
+Provider                ="CME"
+DiskDescription         ="CME UF MIDI Driver Disk"
+DESC_DEVICE_CME_UF      ="CME UF MIDI Keyboard"
+
+DEVICE_CME.SvcDesc      ="CME UF MIDI Driver Service"
+MME.DriverDesc          ="CME UF MIDI Driver"
+
+Proxy.CLSID             ="{17CCA71B-ECD7-11D0-B908-00A0C9223196}"
+KSCATEGORY_AUDIO        ="{6994AD04-93EF-11D0-A3CC-00A0C9223196}"
+
+KSNAME_Topo_MIDI1       ="CME_MIDI1"
+KSNAME_Topo_MIDI2       ="CME_MIDI2"
+KSNAME_Topo_MIDI3       ="CME_MIDI3"
+KSNAME_Topo_MIDI4       ="CME_MIDI4"
+KSNAME_Topo_MIDI5       ="CME_MIDI5"
+KSNAME_Topo_MIDI6       ="CME_MIDI6"
+KSNAME_Topo_MIDI7       ="CME_MIDI7"
+KSNAME_Topo_MIDI8       ="CME_MIDI8"
+
+WDM.Topo_MIDI1.szPname  ="CME UF MIDI 1"
+WDM.Topo_MIDI2.szPname  ="CME UF MIDI 2"
+WDM.Topo_MIDI3.szPname  ="CME UF MIDI 3"
+WDM.Topo_MIDI4.szPname  ="CME UF MIDI 4"
+WDM.Topo_MIDI5.szPname  ="CME UF MIDI 5"
+WDM.Topo_MIDI6.szPname  ="CME UF MIDI 6"
+WDM.Topo_MIDI7.szPname  ="CME UF MIDI 7"
+WDM.Topo_MIDI8.szPname  ="CME UF MIDI 8"
+
+SERVICENAMES            ="ESIMIDIPORT2"
+FILE.WDM                ="ESIMidiport.sys"
