@@ -1,5 +1,11 @@
 # cme_uf_5
 
+
+## updated
+uploaded windows 11 driver
+###alfatest (i do not use osx for music) driver cmd osx
+
+
 Midi keyboard CME UF6, UF5, UF8, UF7 ,UF50, UF60, UF70 driver fix.
 Checked with windows 7 x64
 ( you can modify same way for windows 10.. i think...)
